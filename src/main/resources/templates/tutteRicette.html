@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Lista di tutte le ricette</h1>
+
+<form method="post" action="/webapp/ricette">
+    <input type="text" name="criterio" placeholder="Filtro">
+    <input type="submit"></input>
+</form>
+<div th:each="ricetta : ${ricette}"><!-- fai un foreach della lista ricette del model -->
+
+    <!--           stampa a schermo il nome della ricetta                -->
+    <span th:text="${ricetta.nome}"></span> tempo:<span th:text="${ricetta.tempo}"></span> min
+</div>
+</body>
+</html>

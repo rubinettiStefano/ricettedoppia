@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script>
+    let ricette = null;
+    function leggiRicette()
+    {
+      $.get(
+              "/rest/ricette",
+              function(response)
+              {
+                ricette = response;
+              }
+              //duck typing
+              //se somiglia ad una papera e fa il verso di una papera allora è una papera
+      );
+    }
+
+  function graficaRicette()
+  {
+    let contenuto = `<h1>LISTA RICETTE</h1>`;
+    for(let ricetta of ricette)
+    {
+      contenuto += `<div> ${ricetta.nome} tempo: ${ricetta.tempo} min </div>`;
+      //contenuto += "<div> "+ricetta.nome +" tempo: "+ ricetta.tempo + " min </div>";
+    }
+
+    document.getElementById("listRicette").innerHTML = contenuto;
+  }
+
+  function automatizzato()
+  {
+    $.get(
+            "/rest/ricette",
+            function(response)
+            {
+              ricette = response;
+              let contenuto = `<h1>LISTA RICETTE</h1>`;
+              for(let ricetta of ricette)
+              {
+                contenuto += `<div> ${ricetta.nome} tempo: ${ricetta.tempo} min </div>`;
+                //contenuto += "<div> "+ricetta.nome +" tempo: "+ ricetta.tempo + " min </div>";
+              }
+
+              document.getElementById("listRicette").innerHTML = contenuto;
+            }
+    );
+  }
+
+  function filtraRicette()
+  {
+    let criterio = document.getElementById("filtro").value;
+
+    let contenuto = `<h1>LISTA RICETTE</h1>`;
+    for(let ricetta of ricette)
+    {
+      if(ricetta.nome.toLowerCase().includes(criterio))
+        contenuto += `<div> ${ricetta.nome} </div>`;
+    }
+
+    document.getElementById("listRicette").innerHTML = contenuto;
+  }
+
+    function filtraRicetteTempoMax()
+    {
+
+      let a = []+true+2;
+      let criterio = document.getElementById("filtroTempo").value;
+
+      let contenuto = `<h1>LISTA RICETTE</h1>`;
+      for(let ricetta of ricette)
+      {
+        if(ricetta.tempo<=criterio)
+          contenuto += `<div> ${ricetta.nome} tempo: ${ricetta.tempo} min </div>`;
+      }
+
+      document.getElementById("listRicette").innerHTML = contenuto;
+    }
+
+  </script>
+</head>
+<body>
+<a href="/webapp/ricette">TUTTE RICETTE WEBAPP</a><br/>
+<!-- REQUEST a .../webapp/ricette GET -->
+<button onclick="leggiRicette()">LEGGI</button>
+<button onclick="graficaRicette()">Grafica</button>
+
+<input onkeyup="filtraRicette()" id="filtro" type="text" placeholder="Filtro"></input><br/>
+<input  id="filtroTempo" type="number" placeholder="Tempo Max"></input>
+<button onclick="filtraRicetteTempoMax()">FILTRA</button>
+<div id="listRicette">
+
+
+</div>
+<script>automatizzato();</script>
+</body>
+</html>
